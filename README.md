@@ -23,7 +23,7 @@ npm start
 
 L'application est accessible à l'adresse locale suivante: [http://localhost:3000](http://localhost:3000)
 
-L'application est également accessible en ligne à l'adresse suivante (bientôt disponible) : [https://nathan-mrx.github.io/simulationInterets/](https://nathan-mrx.github.io/simulationInterets/)
+L'application est également accessible en ligne à l'adresse suivante : [https://nathan-mrx.github.io/simulationInterets/](https://nathan-mrx.github.io/simulationInterets/)
 
 ## Auteurs
 
