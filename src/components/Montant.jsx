@@ -2,7 +2,8 @@ import PropTypes from "prop-types";
 
 function Montant({className, taux, transactions}) {
 
-  function dateEff(dateParts, transac){
+  function dateEff(dateParts, transac)
+  {
     let mois = parseInt(dateParts[1])
     if (transac.type == "Dépot") {
       if (dateParts[0] > 15) {
@@ -22,6 +23,29 @@ function Montant({className, taux, transactions}) {
     }
     return dateParts
   }
+
+  /**
+   * date sous la forme "02-12-2012"
+  */
+  function montantAt( date, transactions)
+  {
+    let mnt = 0;
+    date = date.split("-");
+    let transacAt = [];
+    transactions.forEach((transac) =>
+    {
+      if (transac.date[2] < date[2] &&
+          transac.date[1] < date[1] &&
+          transac.date[0] < date[0]) {
+        if (transac.type == "Dépot")
+          mnt += transac.montant;
+        else
+          mnt -= transac.montant;
+      }
+    })
+    return mnt;
+  }
+
   let montant = 0;
   let mntInteret = 0;
   transactions.forEach((transaction) => {
