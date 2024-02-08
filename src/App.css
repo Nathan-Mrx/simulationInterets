@@ -1,3 +1,59 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.ball
+{
+    z-index: -1;
+    border-radius: 100%;
+    animation-name: boule;
+    filter: blur(48px);
+    animation-duration: 6s;
+    position: fixed;
+    height: 256px;
+    width: 256px;
+    animation-iteration-count: infinite;
+}
+
+#red
+{
+    background-color: crimson;
+    animation-delay: 0ms;
+    top: 45%;
+    left: 40%;
+}
+
+#green
+{
+    background-color:greenyellow;
+    animation-delay: -1000ms;
+    top: 37%;
+    left: 32%;
+}
+
+#blue
+{
+    background-color:aqua;
+    animation-delay: -500ms;
+    top: 31%;
+    left: 38%;
+}
+
+#blur
+{
+    position: absolute;
+    top: 0;
+    left: 20%;
+    min-height: 100%;
+    width: 47%;
+    background-color: rgba(255,255,255,0.1);
+    margin: auto;
+}
+
+@keyframes boule{
+    0% {width:256px;height:256px;opacity:1;margin-top: 0px;margin-left: 50px;}
+    25% {opacity:0.7}
+    50% {width:400px;height:400px;opacity:1;margin-top: -150px;margin-left: 0px;}
+    75% {opacity:0.7}
+    100% {width:256px;height:256px;opacity:1;margin-top: 0px;margin-left: 50px;}
+}
