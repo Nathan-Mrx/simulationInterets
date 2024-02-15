@@ -1,11 +1,19 @@
 import './App.css'
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import Card from "./components/Card.jsx";
 import Transactions from "./components/Transactions.jsx";
-
+import Montant from "./components/Montant.jsx";
+import Cookies from 'js-cookie';
 
 function App() {
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState(() => {
+    const savedTransactions = Cookies.get('transactions');
+    return savedTransactions ? JSON.parse(savedTransactions) : [];
+  });
+
+  useEffect(() => {
+    Cookies.set('transactions', JSON.stringify(transactions));
+  }, [transactions]);
 
   function ajouterTransaction() {
     let type = document.querySelector('input[name="type"]:checked').value;
@@ -24,7 +32,7 @@ function App() {
         <div className={"flex flex-col grow gap-5"}>
           <div className={"flex gap-5"}>
             <Card className={"grow"}>
-              <input type={'number'} name={'taux'} step={'0.01'} placeholder={"Taux annuel (en %)"}
+              <input type={'number'} name={'taux'} step={'0.01'} placeholder={"Taux annuel (en %)"} required
               className={"w-full h-full"}/>
             </Card>
             <Card className={"text-center text-3xl"}>
