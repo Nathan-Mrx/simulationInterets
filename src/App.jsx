@@ -1,22 +1,21 @@
 import './App.css'
-import React, { useState } from "react";
-import Transaction from "./components/Transaction.jsx";
+import { useState } from "react";
 import Card from "./components/Card.jsx";
-import Montant from "./components/Montant.jsx";
+import Transactions from "./components/Transactions.jsx";
 
 
 function App() {
-  const [transactions, setTransactions] = useState([])
+  const [transactions, setTransactions] = useState([]);
 
   function ajouterTransaction() {
-    if (!document.querySelector('form').checkValidity()) {
-      return
-    }
-    const montant = document.querySelector('input[name="montant"]').value
-    const date = document.querySelector('input[name="date"]').value
-    const type = document.querySelector('input[name="type"]:checked').value
-    const transaction = <Transaction type={type} montant={montant} date={date}/>
-    setTransactions([...transactions, transaction])
+    let type = document.querySelector('input[name="type"]:checked').value;
+    let montant = document.querySelector('input[name="montant"]').value;
+    let date = document.querySelector('input[name="date"]').value;
+    setTransactions(prevTransactions => [...prevTransactions, {type, montant, date}]);
+  }
+
+  function deleteTransaction(id) {
+    setTransactions(prevTransactions => prevTransactions.filter((transaction, index) => index !== id));
   }
 
   return (
@@ -29,7 +28,7 @@ function App() {
               className={"w-full h-full"}/>
             </Card>
             <Card className={"text-center text-3xl"}>
-              Simulateur d'intérêts
+              Simulateur d’intérêts
             </Card>
           </div>
           <Card className={"grow"}>
@@ -48,7 +47,7 @@ function App() {
                   <label htmlFor="retrait" className="ml-2 text-sm text-gray-700">Retrait</label>
                 </div>
               </div>
-              <button type={'button'} onClick={ajouterTransaction} className={"bg-red-300/60 border border-red-400/60 rounded-full p-2 px-4"}>
+              <button type={'button'} onClick={ajouterTransaction} className={"bg-red-300/60 border border-red-400/60 rounded-full p-2 px-4 shadow-m "}>
                 Ajouter
               </button>
             </div>
@@ -59,15 +58,10 @@ function App() {
           <form>
             <input type={"date"} name={"dateInterets"} value={"2024-12-31"} required/>
           </form>
-          <Montant montant={1200} taux={2}></Montant>
         </Card>
       </header>
 
-      <Card>
-        <div className={'transactions flex-col-reverse flex p-6 '}>
-          {transactions}
-        </div>
-      </Card>
+      <Transactions transactions={transactions} onDelete={deleteTransaction}/>
 
       <div className={"ball"} id={"red"}></div>
       <div className={"ball"} id={"green"}></div>
@@ -78,3 +72,5 @@ function App() {
 }
 
 export default App
+
+
