@@ -6,24 +6,31 @@ import Montant from "./components/Montant.jsx";
 import Cookies from 'js-cookie';
 
 function App() {
-  const [transactions, setTransactions] = useState(() => {
-    const savedTransactions = Cookies.get('transactions');
-    return savedTransactions ? JSON.parse(savedTransactions) : [];
-  });
+  const [transactions, setTransactions] = useState([]);
 
+  // Load transactions from cookies when component mounts
   useEffect(() => {
-    Cookies.set('transactions', JSON.stringify(transactions));
-  }, [transactions]);
+    const savedTransactions = Cookies.get('transactions');
+    if (savedTransactions) {
+      setTransactions(JSON.parse(savedTransactions));
+    }
+  }, []);
 
   function ajouterTransaction() {
     let type = document.querySelector('input[name="type"]:checked').value;
     let montant = document.querySelector('input[name="montant"]').value;
     let date = document.querySelector('input[name="date"]').value;
-    setTransactions(prevTransactions => [...prevTransactions, {type, montant, date}]);
+    const newTransactions = [...transactions, {type, montant, date}];
+    setTransactions(newTransactions);
+    // Save transactions to cookies
+    Cookies.set('transactions', JSON.stringify(newTransactions));
   }
 
   function deleteTransaction(id) {
-    setTransactions(prevTransactions => prevTransactions.filter((transaction, index) => index !== id));
+    const newTransactions = transactions.filter((transaction, index) => index !== id);
+    setTransactions(newTransactions);
+    // Update transactions in cookies
+    Cookies.set('transactions', JSON.stringify(newTransactions));
   }
 
   return (
@@ -40,8 +47,8 @@ function App() {
             </Card>
           </div>
           <Card className={"grow"}>
-            <input type={'number'} placeholder={'Montant (en €)'} name={'montant'} step={'0.01'} required/>
-            <input type={'date'} placeholder={'Date'} name={'date'} required/>
+            <input type={'number'} placeholder={'Montant (en €)'} name={'montant'} step={'0.01'} required className="bg-transparent"/>
+            <input type={'date'} placeholder={'Date'} name={'date'} required className="bg-transparent"/>
             <div className={"flex justify-between"}>
               <div className={"flex flex-col"}>
                 <div className="flex items-center">
@@ -66,6 +73,7 @@ function App() {
           <form>
             <input type={"date"} name={"dateInterets"} value={"2024-12-31"} required/>
           </form>
+          <Montant transactions={transactions}/>
         </Card>
       </header>
 
